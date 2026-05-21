@@ -1,0 +1,147 @@
+/* ============== BASE — variables, reset, body, screens ============== */
+:root {
+  --bg:        #0c0a08;
+  --bg-2:      #14110d;
+  --bg-3:      #1c1812;
+  --ink:       #1a1612;
+  --ink-mid:   #4a3d2c;
+  --ink-light: #8a7a5c;
+  --paper:     #f4e9d4;
+  --paper-2:   #ede0c4;
+  --paper-3:   #d8c8a4;
+  --gold:      #d4a14c;
+  --gold-hi:   #f5c518;
+  --gold-deep: #8a5e1c;
+  --blue:      #4fc3f7;
+  /* Theme accent — flips to orange when "modo contrarreloj" is ON */
+  --accent:       #4fc3f7;
+  --accent-rgb:   79, 195, 247;
+  --accent-light: #d6f0ff;
+  --red-ink:   #b73e3e;
+  --stamp-red: #c8443d;
+  --green-ok:  #5a8a3a;
+  --shadow-soft: 0 6px 24px rgba(0, 0, 0, 0.4);
+  --shadow-deep: 0 18px 60px rgba(0, 0, 0, 0.6);
+  --paper-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.35), 0 30px 60px rgba(0,0,0,0.4);
+}
+
+/* When the user activates the "modo contrarreloj" toggle on home,
+   the whole accent palette flips from cyan to a vivid orange */
+body.timer-active {
+  --accent:       #ff9842;
+  --accent-rgb:   255, 152, 66;
+  --accent-light: #ffe4cc;
+}
+/* And the whole "deep space" backdrop turns warm/orange instead of navy blue */
+body.timer-active {
+  background:
+    radial-gradient(ellipse at 50% 0%,  rgba(var(--accent-rgb), 0.12), transparent 55%) !important,
+    radial-gradient(ellipse at 50% 100%, rgba(245, 197, 24, 0.06), transparent 65%) !important,
+    linear-gradient(180deg, #1a0a05 0%, #0c0502 55%, #050201 100%) !important;
+}
+body.timer-active #screen-home {
+  background: radial-gradient(ellipse at 50% 60%, #1a0a05 0%, #050201 100%);
+}
+body.timer-active #screen-intro {
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(245, 197, 24, 0.10), transparent 55%),
+    radial-gradient(ellipse at 50% 85%, rgba(var(--accent-rgb), 0.10), transparent 60%),
+    linear-gradient(180deg, #160a05 0%, #0a0502 60%, #050201 100%);
+}
+
+/* Smooth crossfade between cyan and orange palette when the toggle changes.
+   :where(*) has zero specificity so any element-specific transition wins. */
+body,
+#screen-home,
+#screen-intro,
+#screen-game,
+#screen-result,
+#screen-final,
+#screen-ranking {
+  transition: background 0.6s ease;
+}
+:where(body, body *, body *::before, body *::after) {
+  transition:
+    color           0.5s ease,
+    border-color    0.5s ease,
+    box-shadow      0.5s ease,
+    text-shadow     0.5s ease,
+    background-color 0.5s ease,
+    fill            0.5s ease,
+    stroke          0.5s ease;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background:
+    radial-gradient(ellipse at 50% 0%,  rgba(var(--accent-rgb), 0.08), transparent 55%),
+    radial-gradient(ellipse at 50% 100%, rgba(245, 197, 24, 0.04), transparent 65%),
+    linear-gradient(180deg, #050a14 0%, #02050a 55%, #000204 100%);
+  color: var(--paper);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+/* Star field overlay (subtle, deep-space) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.6), transparent 50%),
+    radial-gradient(1px 1px at 80% 15%, rgba(255,255,255,0.55), transparent 50%),
+    radial-gradient(1px 1px at 35% 70%, rgba(255,255,255,0.45), transparent 50%),
+    radial-gradient(1px 1px at 70% 55%, rgba(255,255,255,0.5), transparent 50%),
+    radial-gradient(2px 2px at 50% 40%, rgba(200,225,255,0.7), transparent 60%),
+    radial-gradient(1px 1px at 12% 80%, rgba(255,255,255,0.4), transparent 50%),
+    radial-gradient(1px 1px at 90% 85%, rgba(255,255,255,0.5), transparent 50%),
+    radial-gradient(1px 1px at 60% 8%,  rgba(255,255,255,0.45), transparent 50%),
+    radial-gradient(1px 1px at 5%  50%, rgba(255,255,255,0.5), transparent 50%);
+  background-size: 800px 800px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.7;
+}
+/* Vignette to focus the center */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.55) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============== SCREENS ============== */
+.screen {
+  display: none;
+  position: relative;
+  z-index: 1;
+}
+.screen.active { display: block; }
+
+/* Shared page wrapper for game/result/final/ranking screens */
+.page-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 18px 16px 32px;
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#flashOverlay {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}

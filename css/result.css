@@ -1,0 +1,149 @@
+/* ============== RESULT SCREEN — SCI-FI ============== */
+.result-stage {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+.result-polaroid {
+  width: 100%;
+  max-width: 520px;
+}
+.date-stamp {
+  position: absolute;
+  top: 4%;
+  right: 4%;
+  width: 150px;
+  height: 150px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-10deg) scale(0);
+  opacity: 0.95;
+  color: var(--accent);
+  font-family: 'DM Mono', monospace;
+  text-align: center;
+  line-height: 1.1;
+  background: rgba(8, 18, 30, 0.7);
+  backdrop-filter: blur(4px);
+  box-shadow:
+    0 0 30px rgba(var(--accent-rgb), 0.5),
+    inset 0 0 30px rgba(var(--accent-rgb), 0.15),
+    inset 0 0 0 1px rgba(var(--accent-rgb), 0.3);
+  text-shadow: 0 0 8px rgba(var(--accent-rgb), 0.7);
+  z-index: 3;
+}
+.date-stamp::before, .date-stamp::after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  height: 1px;
+  background: var(--accent);
+  box-shadow: 0 0 6px rgba(var(--accent-rgb), 0.6);
+}
+.date-stamp::before { top: 36px; }
+.date-stamp::after { bottom: 36px; }
+.stamp-line {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  font-weight: 600;
+}
+.stamp-year {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 46px;
+  letter-spacing: 0.04em;
+  margin: 4px 0;
+  color: var(--gold);
+  text-shadow: 0 0 14px rgba(245, 197, 24, 0.9);
+}
+.result-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.stat {
+  background: rgba(8, 18, 30, 0.7);
+  border: 1px solid rgba(var(--accent-rgb), 0.32);
+  border-radius: 3px;
+  padding: 14px 6px;
+  text-align: center;
+  position: relative;
+  box-shadow: inset 0 0 12px rgba(var(--accent-rgb), 0.06);
+}
+.stat::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 8px; height: 8px;
+  border-top: 1px solid var(--accent);
+  border-left: 1px solid var(--accent);
+}
+.stat::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0; width: 8px; height: 8px;
+  border-bottom: 1px solid var(--accent);
+  border-right: 1px solid var(--accent);
+}
+.stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  color: rgba(var(--accent-rgb), 0.7);
+  text-transform: uppercase;
+  text-shadow: 0 0 4px rgba(var(--accent-rgb), 0.4);
+}
+.stat-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(24px, 5vw, 34px);
+  color: var(--accent-light);
+  margin-top: 4px;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 12px rgba(var(--accent-rgb), 0.7);
+}
+.stat-value.points { color: var(--gold); text-shadow: 0 0 14px rgba(245, 197, 24, 0.7); }
+.stat-value.deviation { color: var(--accent); }
+
+.paper-note {
+  background: rgba(8, 18, 30, 0.65);
+  backdrop-filter: blur(6px);
+  color: var(--accent-light);
+  padding: 16px 20px 16px 22px;
+  border-radius: 3px;
+  position: relative;
+  border: 1px solid rgba(var(--accent-rgb), 0.32);
+  box-shadow: 0 0 24px rgba(var(--accent-rgb), 0.12), inset 0 0 18px rgba(var(--accent-rgb), 0.04);
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  line-height: 1.55;
+  transform: none;
+}
+.paper-note::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 12px; height: 12px;
+  border-top: 1px solid var(--gold);
+  border-left: 1px solid var(--gold);
+  color: transparent;
+  font-size: 0;
+}
+.paper-note::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0; width: 12px; height: 12px;
+  border-bottom: 1px solid var(--gold);
+  border-right: 1px solid var(--gold);
+}
+.paper-note .note-title {
+  font-family: 'DM Mono', monospace;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  color: var(--gold);
+  margin-bottom: 8px;
+  text-shadow: 0 0 8px rgba(245, 197, 24, 0.5);
+}
+.paper-note a { color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--accent); }

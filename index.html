@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0c0a08" />
+<title>PixelEra · Time Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Bebas+Neue&family=Special+Elite&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<!-- App styles (split by screen) -->
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/intro.css" />
+<link rel="stylesheet" href="css/home.css" />
+<link rel="stylesheet" href="css/game.css" />
+<link rel="stylesheet" href="css/result.css" />
+<link rel="stylesheet" href="css/final.css" />
+<link rel="stylesheet" href="css/ranking.css" />
+<link rel="stylesheet" href="css/util.css" />
+</head>
+<body>
+
+<div id="boot">PIXELERA // INICIANDO SISTEMA</div>
+
+<!-- ============== INTRO ============== -->
+<section id="screen-intro" class="screen active" role="button" tabindex="0" aria-label="Comenzar PixelEra">
+  <div class="intro-top-strip">
+    <span>// PIXELERA SYSTEMS</span>
+    <span>RANGO: 1860 — 2026</span>
+  </div>
+  <canvas id="introCanvas"></canvas>
+  <div class="intro-overlay">
+    <h1 class="intro-title">PixelEra</h1>
+    <div class="intro-subtitle">— ARCHIVO FOTOGRÁFICO · ADIVINA EL AÑO —</div>
+    <div class="intro-prompt">HAZ CLICK PARA EMPEZAR</div>
+  </div>
+</section>
+
+<!-- ============== HOME ============== -->
+<section id="screen-home" class="screen">
+  <div class="home-header">
+    <button class="ledger-btn" id="btnRanking">▣ RANKING</button>
+  </div>
+  <canvas id="homeCanvas"></canvas>
+  <div class="home-controls">
+    <div class="timer-switch">
+      <span>CONTRARRELOJ</span>
+      <button class="vintage-switch" id="timerToggle" aria-pressed="false"></button>
+    </div>
+  </div>
+</section>
+
+<!-- ============== GAME ============== -->
+<section id="screen-game" class="screen">
+  <div class="page-wrap">
+    <div class="game-header">
+      <div class="header-left">
+        <button class="back-btn" id="btnHomeFromGame" title="Volver al menú">←</button>
+        <div>RONDA <b id="roundNum">1</b>/5 · <span class="cat-chip" id="catChip">🎮 VIDEOJUEGOS</span></div>
+      </div>
+      <div class="game-score">★ <span id="gameScore">0</span> PTS</div>
+    </div>
+    <div class="progress-strip" id="progressStrip"></div>
+
+    <div class="polaroid" id="gamePolaroid">
+      <div class="polaroid-image">
+        <div class="skeleton" id="skeleton"></div>
+        <img id="gameImage" alt="" style="display:none" />
+      </div>
+      <div class="polaroid-caption">// ¿EN QUÉ AÑO FUE CAPTURADA?</div>
+    </div>
+
+    <div class="timer-meter" id="timerWrap">
+      <div class="meter-label">TIME</div>
+      <div class="meter-track"><div class="meter-fill" id="timerBar"></div></div>
+      <div class="meter-readout"><span id="timerText">15</span>s</div>
+    </div>
+
+    <div class="dial-wrap">
+      <div class="dial-header">
+        <div class="dial-side-year" id="dialMin">1900</div>
+        <div class="dial-current" id="dialYear">1985</div>
+        <div class="dial-side-year" id="dialMax">2024</div>
+      </div>
+      <div class="dial-indicator"></div>
+      <div class="dial-ribbon" id="dialRibbon">
+        <div class="dial-track" id="dialTrack"></div>
+      </div>
+    </div>
+
+    <button class="stamp-btn primary btn-block" id="btnGuess">▸ CONFIRMAR AÑO</button>
+  </div>
+</section>
+
+<!-- ============== RESULT ============== -->
+<section id="screen-result" class="screen">
+  <button class="screen-back-fab" id="btnHomeFromResultTop" title="Volver al menú">← MENÚ</button>
+  <div class="page-wrap">
+    <div class="result-stage">
+      <div class="polaroid result-polaroid" id="resultPolaroid">
+        <div class="polaroid-image"><img id="resultImage" alt="" /></div>
+        <div class="polaroid-caption">// ARCHIVO PIXELERA</div>
+      </div>
+      <div class="date-stamp" id="dateStamp">
+        <div class="stamp-line">// AÑO</div>
+        <div class="stamp-year" id="resultYearStamp">—</div>
+        <div class="stamp-line">// VERIFICADO</div>
+      </div>
+    </div>
+
+    <div class="result-stats">
+      <div class="stat">
+        <div class="stat-label">TU AÑO</div>
+        <div class="stat-value deviation" id="resultUserYear">—</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">DIFERENCIA</div>
+        <div class="stat-value" id="resultDelta">—</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">PUNTOS</div>
+        <div class="stat-value points">+<span id="resultPoints">0</span></div>
+      </div>
+    </div>
+
+    <div class="paper-note" id="paperNote">
+      <div class="note-title">// DATO CURIOSO</div>
+      <div id="resultFact">—</div>
+      <div id="resultSource" style="margin-top:8px; font-size: 10px; letter-spacing: 0.14em; color: rgba(79, 195, 247, 0.6);"></div>
+    </div>
+
+    <button class="stamp-btn primary btn-block" id="btnNext">▸ SIGUIENTE FOTO</button>
+    <button class="stamp-btn btn-block" id="btnHomeFromResult">← VOLVER AL MENÚ PRINCIPAL</button>
+  </div>
+</section>
+
+<!-- ============== FINAL ============== -->
+<section id="screen-final" class="screen">
+  <button class="screen-back-fab" id="btnHomeFromFinalTop" title="Volver al menú">← MENÚ</button>
+  <div class="page-wrap">
+    <div class="receipt-wrap">
+      <div class="receipt" id="receipt">
+        <div class="rating-badge" id="ratingBadge">
+          <span class="rating-num" id="ratingNum">—</span>
+          <span class="rating-max">/ 10</span>
+        </div>
+        <div class="receipt-header">
+          <div class="receipt-logo">PIXELERA</div>
+          <div class="receipt-tagline">// INFORME FINAL v2.6</div>
+          <div class="receipt-meta">NODO-01 · NÚCLEO TEMPORAL · PXL.NET</div>
+        </div>
+
+        <div class="receipt-row muted"><div>CATEGORÍA</div><div id="receiptCategory">—</div></div>
+        <div class="receipt-row muted"><div>FECHA</div><div id="receiptDate">—</div></div>
+        <div class="receipt-row muted"><div>ID PARTIDA</div><div id="receiptTicket">000000</div></div>
+        <div class="receipt-row muted"><div>RONDAS</div><div>5</div></div>
+
+        <div class="receipt-divider">────────────────────</div>
+
+        <div class="receipt-items" id="receiptItems"></div>
+
+        <div class="receipt-divider">────────────────────</div>
+
+        <div class="receipt-row"><div>SUBTOTAL</div><div id="receiptSubtotal">0</div></div>
+        <div class="receipt-row"><div>BONUS TIEMPO</div><div id="receiptBonus">0</div></div>
+        <div class="receipt-row total"><div>TOTAL</div><div id="receiptTotal">0/5000</div></div>
+
+        <div class="receipt-tier" id="receiptTier">EXCELENTE</div>
+
+        <div class="receipt-footer">
+          <div class="receipt-thanks">// PARTIDA COMPLETADA</div>
+          <div class="receipt-footnote">// FIN DE TRANSMISIÓN</div>
+          <div class="barcode" id="barcode"></div>
+          <div class="barcode-num" id="barcodeNum">0000 0000 0000</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="final-actions">
+      <button class="stamp-btn primary btn-block" id="btnHomeFromFinal" style="font-size:15px;">← VOLVER AL MENÚ PRINCIPAL</button>
+      <input type="text" id="nicknameInput" placeholder="TU NOMBRE PARA EL RANKING" maxlength="16" class="nickname-input" />
+      <button class="stamp-btn btn-block" id="btnSaveRanking">▸ GUARDAR EN EL RANKING</button>
+      <div class="btn-row">
+        <button class="stamp-btn light" id="btnShare">𝕏 COMPARTIR</button>
+        <button class="stamp-btn light" id="btnReplay">↻ JUGAR DE NUEVO</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== RANKING ============== -->
+<section id="screen-ranking" class="screen">
+  <div class="page-wrap">
+    <div class="ranking-header">
+      <h1>RANKING GLOBAL</h1>
+      <p>// MEJORES VIAJEROS DEL TIEMPO</p>
+    </div>
+    <div class="ranking-filter" id="rankingFilter"></div>
+    <div class="ranking-list" id="rankingList"></div>
+    <div style="max-width: 380px; margin: 0 auto; width: 100%;">
+      <button class="stamp-btn ghost btn-block" id="btnHomeFromRanking">← VOLVER AL MENÚ PRINCIPAL</button>
+    </div>
+  </div>
+</section>
+
+
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="flashOverlay"></div>
+
+<!-- ============== LIBRARIES (CDN) ============== -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<!-- ============== APP ============== -->
+<script src="js/app.js"></script>
+
+</body>
+</html>

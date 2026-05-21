@@ -1,0 +1,106 @@
+/* ============== INTRO SCREEN — 3D pocket watch ============== */
+#screen-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(245, 197, 24, 0.10), transparent 55%),
+    radial-gradient(ellipse at 50% 85%, rgba(var(--accent-rgb), 0.06), transparent 60%),
+    linear-gradient(180deg, #060812 0%, #02050a 60%, #000204 100%);
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+}
+/* Star sprinkle behind the clock */
+#screen-intro::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 18% 22%, rgba(255,250,235,0.7), transparent 50%),
+    radial-gradient(2px 2px at 78% 18%, rgba(255,245,210,0.6), transparent 60%),
+    radial-gradient(1px 1px at 42% 78%, rgba(255,250,235,0.55), transparent 50%),
+    radial-gradient(1px 1px at 65% 68%, rgba(255,255,255,0.6), transparent 50%),
+    radial-gradient(1px 1px at 90% 50%, rgba(255,255,255,0.45), transparent 50%),
+    radial-gradient(2px 2px at 25% 60%, rgba(255,240,200,0.7), transparent 60%),
+    radial-gradient(1px 1px at 8% 88%, rgba(255,255,255,0.4), transparent 50%),
+    radial-gradient(1px 1px at 55% 32%, rgba(255,255,255,0.55), transparent 50%),
+    radial-gradient(1px 1px at 33% 12%, rgba(255,255,255,0.45), transparent 50%);
+  background-size: 900px 900px, 700px 700px, 1100px 1100px, 850px 850px, 1000px 1000px, 600px 600px, 750px 750px, 1200px 1200px, 950px 950px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.85;
+}
+#screen-intro canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+.intro-overlay {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 8vh;
+  text-align: center;
+  z-index: 2;
+  pointer-events: none;
+}
+.intro-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(64px, 13vw, 140px);
+  letter-spacing: 0.04em;
+  background: linear-gradient(135deg, #f5c518 0%, #ffe2a0 40%, #d4a14c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 80px rgba(245, 197, 24, 0.4);
+  line-height: 1;
+  animation: introFade 1.4s 0.3s both;
+}
+.intro-subtitle {
+  font-family: 'Special Elite', monospace;
+  color: var(--paper-3);
+  font-size: clamp(13px, 1.6vw, 16px);
+  letter-spacing: 0.25em;
+  margin-top: 12px;
+  animation: introFade 1.4s 0.6s both;
+}
+.intro-prompt {
+  margin-top: 32px;
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: #f5c518;
+  padding: 10px 22px;
+  border: 1px solid rgba(245, 197, 24, 0.4);
+  border-radius: 999px;
+  background: rgba(245, 197, 24, 0.05);
+  animation: promptBlink 2s 1s ease-in-out infinite, introFade 1.4s 0.9s both;
+  box-shadow: 0 0 24px rgba(245, 197, 24, 0.18);
+}
+@keyframes introFade {
+  from { opacity: 0; transform: translateY(20px); filter: blur(10px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+@keyframes promptBlink {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); box-shadow: 0 0 40px rgba(245, 197, 24, 0.35); }
+}
+.intro-top-strip {
+  position: absolute;
+  top: 18px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 24px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--ink-light);
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.7;
+}
