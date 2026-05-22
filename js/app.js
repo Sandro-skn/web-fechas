@@ -1,5 +1,5 @@
 /* =========================================================================
-   RetroGuesser · Adivina el año
+   RetroGuessr · Adivina el año
    ========================================================================= */
 (function () {
   'use strict';
@@ -340,7 +340,7 @@
 
     fx.font = 'bold 32px "Special Elite", monospace';
     fx.fillStyle = '#1a1612';
-    fx.fillText('RETROGUESSER', 512, 295);
+    fx.fillText('RETROGUESSR', 512, 295);
     fx.font = '15px "DM Mono", monospace';
     fx.fillStyle = '#5a3e1a';
     fx.fillText('— TIME ARCHIVE —', 512, 322);
@@ -1863,7 +1863,7 @@
 
   /* ----------------------------- FINAL — receipt ------------------------- */
   function tier(score) {
-    if (score >= 9000) return 'MAESTRO DE RETROGUESSER';
+    if (score >= 9000) return 'MAESTRO DE RETROGUESSR';
     if (score >= 7000) return 'EXCELENTE';
     if (score >= 5000) return 'BIEN JUGADO';
     if (score >= 3000) return 'SIGUE PRACTICANDO';
@@ -1949,7 +1949,7 @@
   }
 
   /* ----------------------------- RANKING --------------------------------- */
-  const RANKING_KEY = 'retroguesser.ranking.v3'; // v3 = with mode field
+  const RANKING_KEY = 'retroguessr.ranking.v3'; // v3 = with mode field
   const SB = (window.PXL_SUPABASE || {});
   const SB_ENABLED = !!(SB.url && SB.anonKey);
   const SB_TABLE = 'scores';
@@ -2146,7 +2146,7 @@
   function shareToTwitter() {
     if (!state.game) return;
     const cat = CATEGORIES[state.game.categoryId];
-    const text = `¡He conseguido ${state.game.totalScore}/10000 en RetroGuesser (${cat.emoji} ${cat.name})! ¿Puedes superarme? 🎯`;
+    const text = `¡He conseguido ${state.game.totalScore}/10000 en RetroGuessr (${cat.emoji} ${cat.name})! ¿Puedes superarme? 🎯`;
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
   }
 
