@@ -1,5 +1,5 @@
 /* =========================================================================
-   PixelEra · Time Archive
+   RetroGuesser · Adivina el año
    ========================================================================= */
 (function () {
   'use strict';
@@ -21,9 +21,11 @@
   };
 
   const FB = (file, w = 900) => `https://commons.wikimedia.org/wiki/Special:FilePath/${file}?width=${w}`;
-  /* Curated, verified Wikimedia Commons file names (lookup via API).
-     Loader runs them in parallel and discards any that fail to load. */
-  const FALLBACK_IMAGES_RAW = {
+  /* Image data is loaded from js/data/<category>.js — one file per category
+     so you can edit/add entries without touching the main app code.
+     Each data file does: window.PXL_DATA.<cat> = [ { file, year, title, fact }, ... ] */
+  const FALLBACK_IMAGES_RAW = (window.PXL_DATA || {});
+  const _UNUSED_INLINE_FALLBACK = {
     historia: [
       { file:'Lange-MigrantMother02.jpg', year:1936, title:'Migrant Mother', fact:'Retrato de Florence Owens Thompson por Dorothea Lange durante la Gran Depresión.' },
       { file:'Raising_the_Flag_on_Iwo_Jima,_larger_-_edit1.jpg', year:1945, title:'Izando la bandera en Iwo Jima', fact:'Joe Rosenthal capturó la imagen el 23 de febrero de 1945.' },
@@ -38,7 +40,27 @@
       { file:'IAEA_02790015_(5613115146).jpg', year:1986, title:'Chernóbil', fact:'Documentación del accidente nuclear del 26 de abril de 1986.' },
       { file:'The_station_pictured_from_the_SpaceX_Crew_Dragon_5.jpg', year:2022, title:'Estación Espacial Internacional', fact:'Imagen de la ISS desde el SpaceX Crew Dragon 5 (Crew-5).' },
       { file:'Ford_Island_aerial_photo_RIMPAC_1986.JPEG', year:1986, title:'Ford Island, Pearl Harbor', fact:'Vista aérea durante el ejercicio RIMPAC 1986 en la histórica base naval.' },
-      { file:'Apollo_program.svg.png', year:1969, title:'Apollo Program', fact:'Programa espacial de la NASA que llevó al ser humano a la Luna.' }
+      { file:'Apollo_program.svg.png', year:1969, title:'Apollo Program', fact:'Programa espacial de la NASA que llevó al ser humano a la Luna.' },
+      { file:'Sir_Winston_Churchill_-_19086236948_(restored).jpg', year:1942, title:'Winston Churchill', fact:'Primer ministro británico durante la Segunda Guerra Mundial.' },
+      { file:'Hitler_portrait_crop_(cropped)(2).jpg', year:1937, title:'Adolf Hitler', fact:'Líder del Tercer Reich antes del estallido de la guerra.' },
+      { file:'FDR-1944-Campaign-Portrait_(3x4_retouched,_cropped).jpg', year:1944, title:'Franklin D. Roosevelt', fact:'Retrato de campaña del 32º presidente de EEUU.' },
+      { file:'StalinCropped1943.jpg', year:1943, title:'Iósif Stalin', fact:'Líder soviético durante la Segunda Guerra Mundial.' },
+      { file:'De_Gaulle-OWI.jpg', year:1942, title:'Charles de Gaulle', fact:'Líder de la Francia Libre durante la guerra.' },
+      { file:'John_F._Kennedy,_White_House_color_photo_portrait.jpg', year:1961, title:'John F. Kennedy', fact:'Retrato oficial del 35º presidente de EEUU.' },
+      { file:'Martin_Luther_King,_Jr..jpg', year:1964, title:'Martin Luther King Jr.', fact:'Líder del movimiento por los derechos civiles, año del Nobel.' },
+      { file:'Elvis_Presley_promoting_Jailhouse_Rock.jpg', year:1957, title:'Elvis Presley', fact:'Foto promocional para la película Jailhouse Rock.' },
+      { file:'The_Beatles_1963_Dezo_Hoffman_Capitol_Records_press_photo_2.jpg', year:1963, title:'The Beatles', fact:'Foto promocional de Capitol Records de Dezo Hoffmann.' },
+      { file:'Yuri_Gagarin_with_awards_(cropped)_2.jpg', year:1961, title:'Yuri Gagarin', fact:'Primer humano en viajar al espacio, el 12 de abril de 1961.' },
+      { file:'Neil_Armstrong_pose.jpg', year:1969, title:'Neil Armstrong', fact:'Primer ser humano en pisar la superficie de la Luna.' },
+      { file:'Monroecirca1953.jpg', year:1953, title:'Marilyn Monroe', fact:'La icónica actriz en el apogeo de su carrera.' },
+      { file:'AudreyKHepburn.jpg', year:1956, title:'Audrey Hepburn', fact:'Actriz británica símbolo de elegancia y estilo.' },
+      { file:'Frida_Kahlo,_by_Guillermo_Kahlo.jpg', year:1932, title:'Frida Kahlo', fact:'Retrato tomado por su padre, el fotógrafo Guillermo Kahlo.' },
+      { file:'Che_Guevara_-_Guerrillero_Heroico_by_Alberto_Korda.jpg', year:1960, title:'Che Guevara', fact:'"Guerrillero Heroico" de Alberto Korda, una de las fotos más reproducidas del siglo XX.' },
+      { file:'Mother_Teresa_1.jpg', year:1986, title:'Madre Teresa', fact:'Religiosa albanesa, premio Nobel de la Paz en 1979.' },
+      { file:'Margaret_Thatcher_stock_portrait_(2)_(cropped).jpg', year:1983, title:'Margaret Thatcher', fact:'"La Dama de Hierro", primera ministra británica.' },
+      { file:'Official_Portrait_of_President_Reagan_1981.jpg', year:1981, title:'Ronald Reagan', fact:'Retrato oficial del 40º presidente de EEUU.' },
+      { file:'Diana,_Princess_of_Wales_1997_(2).jpg', year:1997, title:'Diana de Gales', fact:'Foto del año de su muerte en accidente en París.' },
+      { file:'Pablo_picasso_1.jpg', year:1962, title:'Pablo Picasso', fact:'El pintor andaluz, cofundador del cubismo, en su madurez.' }
     ],
     cine: [
       { file:'Metropolis_(German_three-sheet_poster).jpg', year:1927, title:'Metropolis', fact:'Cartel alemán de la obra maestra de Fritz Lang.' },
@@ -50,7 +72,27 @@
       { file:'Intolerance_(film).jpg', year:1916, title:'Intolerancia', fact:'Drama épico de D.W. Griffith con cuatro historias paralelas.' },
       { file:'The_General_(1926)_-_Movie_Poster_2.png', year:1926, title:'The General', fact:'Comedia muda dirigida y protagonizada por Buster Keaton.' },
       { file:'Sherlock_jr_poster.jpg', year:1924, title:'Sherlock Jr.', fact:'Comedia de Buster Keaton con efectos especiales pioneros.' },
-      { file:'Gold_rush_poster.jpg', year:1925, title:'La quimera del oro', fact:'Charlie Chaplin como vagabundo en el Klondike.' }
+      { file:'Gold_rush_poster.jpg', year:1925, title:'La quimera del oro', fact:'Charlie Chaplin como vagabundo en el Klondike.' },
+      { file:'CasablancaPoster-Gold.jpg', year:1942, title:'Casablanca', fact:'Película de Michael Curtiz con Bogart y Bergman.' },
+      { file:'Poster_-_Gone_With_the_Wind_01.jpg', year:1939, title:'Lo que el viento se llevó', fact:'Épica romántica de la guerra civil estadounidense.' },
+      { file:'Citizen_Kane_poster,_1941_(Style_B,_unrestored).jpg', year:1941, title:'Ciudadano Kane', fact:'Obra maestra de Orson Welles, considerada la mejor película de la historia.' },
+      { file:'Psycho_(1960)_theatrical_poster_(retouched).jpg', year:1960, title:'Psicosis', fact:'Thriller de Alfred Hitchcock con la famosa escena de la ducha.' },
+      { file:'Godfather_ver1.jpg', year:1972, title:'El Padrino', fact:'Saga mafiosa de Francis Ford Coppola con Marlon Brando y Al Pacino.' },
+      { file:'Jaws_movie_poster.jpg', year:1975, title:'Tiburón', fact:'El primer gran blockbuster veraniego, dirigido por Steven Spielberg.' },
+      { file:'StarWarsMoviePoster1977.jpg', year:1977, title:'Star Wars: Una nueva esperanza', fact:'La galaxia muy muy lejana de George Lucas.' },
+      { file:'Apocalypse_Now_poster.jpg', year:1979, title:'Apocalypse Now', fact:'Vietnam visto por Coppola, inspirada en El corazón de las tinieblas.' },
+      { file:'E_t_the_extra_terrestrial_ver3.jpg', year:1982, title:'E.T. el Extraterrestre', fact:'El alien amigo de Spielberg que conmovió al mundo.' },
+      { file:'The_Empire_Strikes_Back_(1980_film).jpg', year:1980, title:'El Imperio Contraataca', fact:'Episodio V, considerado el mejor de la saga original.' },
+      { file:'Back_to_the_Future.jpg', year:1985, title:'Regreso al Futuro', fact:'Marty McFly viaja a 1955 en un DeLorean.' },
+      { file:'Goodfellas.jpg', year:1990, title:'Uno de los Nuestros', fact:'Scorsese y la mafia italoamericana.' },
+      { file:'Jurassic_Park_poster.jpg', year:1993, title:'Parque Jurásico', fact:'Dinosaurios resucitados por la magia de Spielberg.' },
+      { file:'Pulp_Fiction_(1994)_poster.jpg', year:1994, title:'Pulp Fiction', fact:'Tarantino y sus historias entrelazadas, Palma de Oro en Cannes.' },
+      { file:'Titanic_(1997_film)_poster.png', year:1997, title:'Titanic', fact:'Romance épico de James Cameron, 11 Óscars.' },
+      { file:'Saving_Private_Ryan_poster.jpg', year:1998, title:'Salvar al soldado Ryan', fact:'Drama bélico de Spielberg con el desembarco de Normandía.' },
+      { file:'The_Matrix.png', year:1999, title:'Matrix', fact:'Los Wachowski reescriben la ciencia ficción con bullet time.' },
+      { file:'The_Dark_Knight_(2008_film).jpg', year:2008, title:'El Caballero Oscuro', fact:'Batman vs Joker de Christopher Nolan, con Heath Ledger.' },
+      { file:'Avatar_(2009_film)_poster.jpg', year:2009, title:'Avatar', fact:'Pandora reinventa el cine 3D, mayor recaudación histórica.' },
+      { file:'Inception_(2010)_theatrical_poster.jpg', year:2010, title:'Origen', fact:'Sueños dentro de sueños, otra obra mental de Nolan.' }
     ],
     ciudades: [
       { file:'Tour_Eiffel_Wikimedia_Commons_(cropped).jpg', year:2014, title:'Torre Eiffel', fact:'Construida para la Exposición Universal de 1889 por Gustave Eiffel.' },
@@ -61,7 +103,27 @@
       { file:'Sydney_Australia._(21339175489).jpg', year:2015, title:'Ópera de Sídney', fact:'Diseñada por Jørn Utzon e inaugurada en 1973.' },
       { file:'Tokyo_Tower_2023.jpg', year:2023, title:'Torre de Tokio', fact:'Inaugurada en 1958, inspirada en la Torre Eiffel.' },
       { file:'Burj_Khalifa_(worlds_tallest_building)_and_the_Dubai_skyline_(25781049892).jpg', year:2016, title:'Burj Khalifa', fact:'El edificio más alto del mundo (828 m), inaugurado en Dubái en 2010.' },
-      { file:'1029_Acropolis_of_Athens_in_Greece_at_night_Photo_by_Giles_Laurent.jpg', year:2023, title:'Acrópolis de Atenas', fact:'Conjunto monumental del siglo V a.C., con el Partenón como joya.' }
+      { file:'1029_Acropolis_of_Athens_in_Greece_at_night_Photo_by_Giles_Laurent.jpg', year:2023, title:'Acrópolis de Atenas', fact:'Conjunto monumental del siglo V a.C., con el Partenón como joya.' },
+      { file:'Brooklyn_Bridge_Manhattan.jpg', year:2010, title:'Puente de Brooklyn', fact:'Vista moderna del puente histórico de Nueva York.' },
+      { file:'Empire_State_Building_(aerial_view).jpg', year:2015, title:'Empire State Building', fact:'Vista aérea del rascacielos art déco de 1931.' },
+      { file:'Tower_Bridge_at_Dawn.jpg', year:2015, title:'Tower Bridge', fact:'El icónico puente basculante del Támesis al amanecer.' },
+      { file:'Notre-Dame_de_Paris,_4_October_2017.jpg', year:2017, title:'Notre-Dame de París', fact:'La catedral antes del incendio de abril de 2019.' },
+      { file:'Louvre_Museum_Wikimedia_Commons.jpg', year:2014, title:'Museo del Louvre', fact:'Pirámide de Pei en el patio principal del palacio.' },
+      { file:'Arc_de_Triomphe,_Paris_21_October_2010.jpg', year:2010, title:'Arco del Triunfo', fact:'Monumento napoleónico encargado en 1806 en la place de l\'Étoile.' },
+      { file:'Madrid_Plaza_Mayor_(48733706273).jpg', year:2019, title:'Plaza Mayor de Madrid', fact:'Iniciada en 1617 bajo Felipe III, corazón del Madrid de los Austrias.' },
+      { file:'Christ_the_Redeemer_-_Cristo_Redentor.jpg', year:2015, title:'Cristo Redentor', fact:'Estatua art déco de 38 m sobre el Corcovado en Río de Janeiro.' },
+      { file:'The_Great_Wall_of_China_at_Jinshanling-edit.jpg', year:2008, title:'Gran Muralla China', fact:'Sección de Jinshanling, una de las mejor conservadas.' },
+      { file:'The_Forbidden_City_-_View_from_Coal_Hill.jpg', year:2014, title:'Ciudad Prohibida', fact:'Palacio imperial chino, residencia de emperadores Ming y Qing.' },
+      { file:'Al_Deir_Petra.JPG', year:2010, title:'Petra (El Monasterio)', fact:'Antigua ciudad nabatea esculpida en la roca rosa de Jordania.' },
+      { file:'Pyramids_of_the_Giza_Necropolis.jpg', year:2010, title:'Pirámides de Giza', fact:'Las tres pirámides faraónicas con la Esfinge.' },
+      { file:'Hagia_Sophia_(228968325).jpeg', year:2015, title:'Santa Sofía', fact:'Antigua catedral bizantina del año 537, hoy mezquita en Estambul.' },
+      { file:'Sydney_Harbour_Bridge-16_October_2025.jpg', year:2025, title:'Sydney Harbour Bridge', fact:'Apodado "The Coathanger", inaugurado en 1932.' },
+      { file:'Golden_Gate_Bridge_as_seen_from_Battery_East.jpg', year:2015, title:'Golden Gate Bridge', fact:'El puente colgante naranja de San Francisco, inaugurado en 1937.' },
+      { file:'View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu_(cropped).jpg', year:2018, title:'Manhattan desde Rockefeller', fact:'Vista clásica del skyline neoyorquino.' },
+      { file:'Las_Vegas_Strip_09_2017_4897.jpg', year:2017, title:'Las Vegas Strip', fact:'La avenida principal del entretenimiento en el desierto de Nevada.' },
+      { file:'Dubai_Marina_Skyline.jpg', year:2017, title:'Dubai Marina', fact:'Distrito artificial de rascacielos de lujo a orillas del Golfo.' },
+      { file:'Shibuya_Crossing,_Aerial.jpg', year:2018, title:'Cruce de Shibuya', fact:'El paso de peatones más fotografiado del mundo, en Tokio.' },
+      { file:'Cidade_Maravilhosa.jpg', year:2014, title:'Río de Janeiro', fact:'La "Cidade Maravilhosa" vista desde el Cristo Redentor.' }
     ],
     futbol: [
       { file:'1930_FIFA_World_Cup_Final_-_Argentina_v_Uruguay.jpg', year:1930, title:'Final del Mundial 1930', fact:'Uruguay venció 4-2 a Argentina en Montevideo.' },
@@ -73,7 +135,27 @@
       { file:'Diego_Maradona_1986.jpg', year:1986, title:'Maradona en México 86', fact:'Conquistó el Mundial marcando "la mano de Dios" y el "gol del siglo".' },
       { file:'Estadio_Centenario.jpg', year:1930, title:'Estadio Centenario', fact:'Construido en Montevideo para el Mundial de 1930.' },
       { file:'Iniesta_lap_of_honour_Euro_2012.jpg', year:2012, title:'Iniesta en la Euro 2012', fact:'España conquistó su tercer gran torneo consecutivo.' },
-      { file:'Bobby_Moore_England_Captain.jpg', year:1966, title:'Bobby Moore', fact:'Capitán de Inglaterra campeona del mundo en 1966.' }
+      { file:'Bobby_Moore_England_Captain.jpg', year:1966, title:'Bobby Moore', fact:'Capitán de Inglaterra campeona del mundo en 1966.' },
+      { file:'Lionel_Messi_White_House_2026_(3x4_cropped).jpg', year:2026, title:'Lionel Messi', fact:'En la Casa Blanca, era post-Inter Miami.' },
+      { file:'President_Donald_Trump_meets_with_Cristiano_Ronaldo_in_the_Oval_Office_(54933344262)_(cropped_and_rotated).jpg', year:2025, title:'Cristiano Ronaldo en la Casa Blanca', fact:'Reunión con Trump en el Despacho Oval.' },
+      { file:'Neymar_Jr._with_Al_Hilal,_3_October_2023_-_03_(cropped).jpg', year:2023, title:'Neymar en Al Hilal', fact:'Su etapa en el fútbol saudí tras dejar el PSG.' },
+      { file:'Argentina_celebrando_copa_(cropped).jpg', year:1986, title:'Argentina campeona México 86', fact:'Maradona y compañeros celebrando con la Copa del Mundo.' },
+      { file:'Johan_Cruijff_(1974).jpg', year:1974, title:'Johan Cruyff', fact:'El astro neerlandés en el Mundial de Alemania.' },
+      { file:'Zinedine_Zidane_by_Tasnim_03.jpg', year:2018, title:'Zinedine Zidane', fact:'Como entrenador del Real Madrid tras tres Champions seguidas.' },
+      { file:'Ronaldinho_in_2019.jpg', year:2019, title:'Ronaldinho', fact:'La sonrisa eterna del brasileño tras su retirada.' },
+      { file:'Ronaldo_Luís_Nazário_de_Lima_2019_(3x4_cropped).jpg', year:2019, title:'Ronaldo Nazário', fact:'El "Fenómeno" brasileño, doble Mundial y doble Pichichi.' },
+      { file:'Sergio_Ramos_Interview_2021_(cropped).jpg', year:2021, title:'Sergio Ramos', fact:'El capitán histórico del Real Madrid en su último año en el club.' },
+      { file:'Iker-Casillas-SportsTrade-2021-cropped.jpg', year:2021, title:'Iker Casillas', fact:'"San Iker", portero campeón del Mundial 2010 con España.' },
+      { file:'20150616_-_Portugal_-_Italie_-_Genève_-_Andrea_Pirlo_(cropped).jpg', year:2015, title:'Andrea Pirlo', fact:'El elegante volante italiano, campeón del Mundial 2006.' },
+      { file:'David_Beckham_UNICEF_(cropped2).jpg', year:2018, title:'David Beckham', fact:'Embajador de UNICEF tras una carrera en Manchester United, Real Madrid y otros.' },
+      { file:'Frank_Lampard_2019.jpg', year:2019, title:'Frank Lampard', fact:'Leyenda del Chelsea como entrenador del propio club.' },
+      { file:'2019147183134_2019-05-27_Fussball_1.FC_Kaiserslautern_vs_FC_Bayern_München_-_Sven_-_1D_X_MK_II_-_0228_-_B70I8527_(cropped).jpg', year:2019, title:'Robert Lewandowski', fact:'El goleador polaco del Bayern de Múnich.' },
+      { file:'Erling_Haaland_June_2025.jpg', year:2025, title:'Erling Haaland', fact:'La máquina goleadora noruega del Manchester City.' },
+      { file:'Mohamed_Salah_2018.jpg', year:2018, title:'Mohamed Salah', fact:'El faraón egipcio del Liverpool, Bota de Oro 2018 y 2019.' },
+      { file:'Kevin_De_Bruyne_USMNT_v_Belgium_Mar_28_2026-64_(cropped).jpg', year:2026, title:'Kevin De Bruyne', fact:'Precisión y asistencias belgas en cada balón.' },
+      { file:'Franz_Beckenbauer_(1975).jpg', year:1975, title:'Franz Beckenbauer', fact:'"Der Kaiser", capitán de Alemania campeona del Mundial 1974.' },
+      { file:'Michel_Platini_2010_(cropped).jpg', year:2010, title:'Michel Platini', fact:'Triple Balón de Oro consecutivo (1983-85), capitán de Francia.' },
+      { file:'George_best_1976.jpg', year:1976, title:'George Best', fact:'Genio norirlandés del Manchester United, Balón de Oro 1968.' }
     ],
     videojuegos: [
       { file:'Atari-2600-Wood-4Sw-Set.png', year:1977, title:'Atari 2600', fact:'Popularizó los cartuchos intercambiables en consolas domésticas.' },
@@ -88,10 +170,29 @@
       { file:'Wii-Console-Set.png', year:2006, title:'Nintendo Wii', fact:'Revolucionó el control de movimiento con sus mandos.' },
       { file:'Nintendo-Switch-Console-Docked-wJoyCons.png', year:2017, title:'Nintendo Switch', fact:'Híbrido entre consola doméstica y portátil.' },
       { file:'PS4-Console-wDualShock4.png', year:2013, title:'PlayStation 4', fact:'Más de 117 millones de unidades vendidas.' },
-      { file:'Xbox-360-S-Console-Set.png', year:2010, title:'Xbox 360 S', fact:'Versión rediseñada de la Xbox 360, más fina y silenciosa.' }
+      { file:'Xbox-360-S-Console-Set.png', year:2010, title:'Xbox 360 S', fact:'Versión rediseñada de la Xbox 360, más fina y silenciosa.' },
+      { file:'PS2-Versions.png', year:2000, title:'PlayStation 2 (versiones)', fact:'Las distintas revisiones de la consola más vendida de la historia.' },
+      { file:'Xbox-Console-wDuke-L.jpg', year:2001, title:'Xbox con mando Duke', fact:'La primera Xbox y su famoso mando enorme apodado "The Duke".' },
+      { file:'PS3_consoles_montage.png', year:2006, title:'PlayStation 3', fact:'Familia de modelos: Fat, Slim y Super Slim.' },
+      { file:'GameCube-Console-Set.png', year:2001, title:'Nintendo GameCube', fact:'El cubo morado de Nintendo, con mini-DVDs como soporte.' },
+      { file:'Nintendo-3DS-AquaOpen.png', year:2011, title:'Nintendo 3DS', fact:'Portátil con efecto 3D estereoscópico sin gafas.' },
+      { file:'PlayStation-Vita-1101-FL.png', year:2011, title:'PlayStation Vita', fact:'Sucesora de la PSP con doble joystick y panel táctil trasero.' },
+      { file:'Black_and_white_Playstation_5_base_edition_with_controller.png', year:2020, title:'PlayStation 5', fact:'Novena generación de Sony con SSD ultrarrápido.' },
+      { file:'Steam_Deck_(front).png', year:2022, title:'Steam Deck', fact:'PC portátil de Valve para jugar al catálogo de Steam.' },
+      { file:'Sega-Game-Gear-WB.png', year:1990, title:'Sega Game Gear', fact:'La portátil a color de Sega, rival de la Game Boy.' },
+      { file:'TurboGrafx16-Console-Set.jpg', year:1987, title:'TurboGrafx-16', fact:'La PC Engine de NEC en Norteamérica.' },
+      { file:'Neo-Geo-AES-Console-Set.png', year:1990, title:'Neo Geo AES', fact:'La consola arcade-en-casa de SNK, prohibitivamente cara.' },
+      { file:'ColecoVision-wController-L.jpg', year:1982, title:'ColecoVision', fact:'Competidora directa de la Atari 2600 con mejores gráficos.' },
+      { file:'Sega-Master-System-Set.jpg', year:1985, title:'Sega Master System', fact:'La primera respuesta de Sega a Nintendo, popular en Brasil y Europa.' },
+      { file:'Nintendo-Game-Boy-Advance-Purple-FL.png', year:2001, title:'Game Boy Advance', fact:'La portátil de 32 bits de Nintendo, sucesora de la Game Boy Color.' },
+      { file:'Nintendo-DS-Fat-Blue.png', year:2004, title:'Nintendo DS', fact:'La revolucionaria portátil de doble pantalla con táctil.' },
+      { file:'PSP-1000.png', year:2004, title:'PlayStation Portable (PSP)', fact:'La portátil de Sony con discos UMD y pantalla widescreen.' },
+      { file:'Sega-CD-Model1-Set.jpg', year:1992, title:'Sega CD / Mega CD', fact:'Expansión de la Mega Drive para juegos en CD-ROM.' },
+      { file:'Air_Force_officer_using_Valve_Index.jpg', year:2019, title:'Valve Index', fact:'Cascos de realidad virtual PC de Valve, top de gama.' },
+      { file:'Magnavox-Odyssey-Console-Set.jpg', year:1972, title:'Magnavox Odyssey', fact:'La primera consola de videojuegos doméstica de la historia.' },
+      { file:'Atari-Lynx-I-Handheld.jpg', year:1989, title:'Atari Lynx', fact:'Primera portátil con pantalla LCD a color, frente a la Game Boy monocroma.' }
     ]
-  };
-  // Keep legacy reference so the rest of the code keeps working
+  }; void _UNUSED_INLINE_FALLBACK;
   const FALLBACK_IMAGES = FALLBACK_IMAGES_RAW;
 
   /* ----------------------------- STATE ----------------------------------- */
@@ -101,6 +202,7 @@
     game: null,
     timer: null,
     rankingFilter: 'all',
+    rankingMode: 'normal',
     introScene: null,
     homeScene: null,
     dial: null
@@ -238,7 +340,7 @@
 
     fx.font = 'bold 32px "Special Elite", monospace';
     fx.fillStyle = '#1a1612';
-    fx.fillText('PIXELERA', 512, 295);
+    fx.fillText('RETROGUESSER', 512, 295);
     fx.font = '15px "DM Mono", monospace';
     fx.fillStyle = '#5a3e1a';
     fx.fillText('— TIME ARCHIVE —', 512, 322);
@@ -1357,16 +1459,16 @@
     })).sort(() => Math.random() - 0.5);
 
     // Pre-load and filter out broken URLs (skips 404s, slow images)
-    const rounds = await pickLoadable(pool, 5);
+    const rounds = await pickLoadable(pool, 10);
 
     // Safety net: if too many broke, top up with whatever remains so the game
-    // always has 5 rounds even if some images fail to render
+    // always has 10 rounds even if some images fail to render
     let i = 0;
-    while (rounds.length < 5 && i < pool.length) {
+    while (rounds.length < 10 && i < pool.length) {
       if (!rounds.includes(pool[i])) rounds.push(pool[i]);
       i++;
     }
-    return rounds.slice(0, 5);
+    return rounds.slice(0, 10);
   }
 
   /* ----------------------------- SCORING --------------------------------- */
@@ -1567,7 +1669,7 @@
       showScreen('screen-home');
       return;
     }
-    while (rounds.length < 5) rounds.push(rounds[rounds.length % Math.max(1, rounds.length)]);
+    while (rounds.length < 10) rounds.push(rounds[rounds.length % Math.max(1, rounds.length)]);
 
     state.game = { categoryId: catId, rounds, currentRound: 0, totalScore: 0, breakdown: [] };
     $('catChip').textContent = `${cat.emoji} ${cat.name.toUpperCase()}`;
@@ -1578,7 +1680,7 @@
   function renderStrip() {
     const s = $('progressStrip');
     s.innerHTML = '';
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
       const p = document.createElement('div');
       p.className = 'strip-piece';
       if (i < state.game.currentRound) p.classList.add('active');
@@ -1750,7 +1852,7 @@
 
     const old = $('btnNext'), nw = old.cloneNode(true);
     old.parentNode.replaceChild(nw, old);
-    const last = state.game.currentRound >= 4;
+    const last = state.game.currentRound >= 9;
     nw.textContent = last ? '▸ INFORME FINAL' : '▸ SIGUIENTE FOTO';
     nw.addEventListener('click', () => {
       sfxClick();
@@ -1761,10 +1863,10 @@
 
   /* ----------------------------- FINAL — receipt ------------------------- */
   function tier(score) {
-    if (score >= 4500) return 'MAESTRO DE PIXELERA';
-    if (score >= 3500) return 'EXCELENTE';
-    if (score >= 2500) return 'BIEN JUGADO';
-    if (score >= 1500) return 'SIGUE PRACTICANDO';
+    if (score >= 9000) return 'MAESTRO DE RETROGUESSER';
+    if (score >= 7000) return 'EXCELENTE';
+    if (score >= 5000) return 'BIEN JUGADO';
+    if (score >= 3000) return 'SIGUE PRACTICANDO';
     return 'NECESITA MEJORAR';
   }
 
@@ -1822,11 +1924,11 @@
     // Hide the time-bonus row entirely when no timer mode is active
     const bonusRow = $('receiptBonus').parentElement;
     if (bonusRow) bonusRow.style.display = state.timerMode ? '' : 'none';
-    $('receiptTotal').textContent = total + ' / 5000';
+    $('receiptTotal').textContent = total + ' / 10000';
     $('receiptTier').textContent = tier(total);
 
     // Compute 1-10 rating from final score
-    const rating = Math.max(1, Math.min(10, Math.round(total / 500)));
+    const rating = Math.max(1, Math.min(10, Math.round(total / 1000)));
     $('ratingNum').textContent = rating;
 
     renderBarcode($('barcode'), parseInt(ticket, 10));
@@ -1847,32 +1949,143 @@
   }
 
   /* ----------------------------- RANKING --------------------------------- */
-  const RANKING_KEY = 'pixelera.ranking.v2';
-  function loadRanking() {
+  const RANKING_KEY = 'retroguesser.ranking.v3'; // v3 = with mode field
+  const SB = (window.PXL_SUPABASE || {});
+  const SB_ENABLED = !!(SB.url && SB.anonKey);
+  const SB_TABLE = 'scores';
+
+  function localLoadAll() {
     try { return JSON.parse(localStorage.getItem(RANKING_KEY) || '[]'); } catch (e) { return []; }
   }
-  function saveRanking(arr) {
+  function localSaveAll(arr) {
     try { localStorage.setItem(RANKING_KEY, JSON.stringify(arr)); } catch (e) {}
   }
-  function saveCurrentToRanking() {
+
+  async function sbFetch(filters = {}) {
+    // filters: { mode, category }
+    const params = new URLSearchParams();
+    params.set('select', 'nickname,score,category,mode,created_at');
+    params.set('order', 'score.desc');
+    params.set('limit', '10');
+    if (filters.mode) params.set('mode', 'eq.' + filters.mode);
+    if (filters.category && filters.category !== 'all') params.set('category', 'eq.' + filters.category);
+    const url = `${SB.url}/rest/v1/${SB_TABLE}?${params.toString()}`;
+    const res = await fetch(url, {
+      headers: { apikey: SB.anonKey, Authorization: 'Bearer ' + SB.anonKey }
+    });
+    if (!res.ok) throw new Error('Supabase fetch failed: ' + res.status);
+    const rows = await res.json();
+    return rows.map(r => ({
+      nickname: r.nickname, score: r.score, category: r.category,
+      mode: r.mode, date: r.created_at
+    }));
+  }
+
+  async function sbInsert(entry) {
+    const url = `${SB.url}/rest/v1/${SB_TABLE}`;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        apikey: SB.anonKey,
+        Authorization: 'Bearer ' + SB.anonKey,
+        'Content-Type': 'application/json',
+        Prefer: 'return=representation'
+      },
+      body: JSON.stringify({
+        nickname: entry.nickname,
+        score: entry.score,
+        category: entry.category,
+        mode: entry.mode
+      })
+    });
+    if (!res.ok) throw new Error('Supabase insert failed: ' + res.status);
+    return res.json();
+  }
+
+  async function loadRankingFor(filters) {
+    if (SB_ENABLED) {
+      try { return await sbFetch(filters); } catch (e) { /* fall through to local */ }
+    }
+    return localLoadAll().filter(e => {
+      if (filters.mode && e.mode !== filters.mode) return false;
+      if (filters.category && filters.category !== 'all' && e.category !== filters.category) return false;
+      return true;
+    });
+  }
+
+  async function saveCurrentToRanking() {
     if (!state.game) return;
     const nick = ($('nicknameInput').value || '').trim().slice(0, 16);
     if (!nick) { toast('Escribe un nombre'); $('nicknameInput').focus(); return; }
-    const all = loadRanking();
-    all.push({
+
+    const entry = {
       nickname: nick,
       category: state.game.categoryId,
       score: state.game.totalScore,
+      mode: state.timerMode ? 'contrarreloj' : 'normal',
       date: new Date().toISOString()
-    });
-    saveRanking(all);
-    toast('// GUARDADO EN EL RANKING');
-    sfxStamp();
+    };
+
     $('btnSaveRanking').disabled = true;
+    $('btnSaveRanking').textContent = '... GUARDANDO';
+
+    // Always persist locally as a backup
+    const all = localLoadAll();
+    all.push(entry);
+    localSaveAll(all);
+
+    let savedRemote = false;
+    if (SB_ENABLED) {
+      try { await sbInsert(entry); savedRemote = true; } catch (e) { /* keep local-only */ }
+    }
+
+    // Find position in TOP 10 only — if you're not there, you're "fuera del top 10"
+    let rank = null;
+    try {
+      const top10 = await loadRankingFor({ mode: entry.mode, category: entry.category });
+      const sorted = top10.sort((a, b) => b.score - a.score).slice(0, 10);
+      const idx = sorted.findIndex(e =>
+        e.nickname === entry.nickname && e.score === entry.score &&
+        e.category === entry.category && e.mode === entry.mode
+      );
+      if (idx >= 0 && idx < 10) rank = idx + 1;
+    } catch (e) {}
+
+    sfxStamp();
     $('btnSaveRanking').textContent = '✓ GUARDADO';
+    // Pre-select this mode/category on the ranking screen so the player
+    // lands on the leaderboard where their entry just appeared.
+    state.rankingMode = entry.mode;
+    state.rankingFilter = entry.category;
+    if (rank) {
+      toast(`▶ PUESTO #${rank} ${savedRemote ? 'GLOBAL' : 'LOCAL'} EN EL TOP 10`, 3800);
+    } else {
+      toast('// GUARDADO · FUERA DEL TOP 10', 3000);
+    }
   }
 
-  function renderRanking() {
+  async function renderRanking() {
+    // Mode tabs
+    const m = $('rankingMode');
+    m.innerHTML = '';
+    const modes = [
+      { id: 'normal',       name: '◷ NORMAL' },
+      { id: 'contrarreloj', name: '⏱ CONTRARRELOJ' }
+    ];
+    modes.forEach(mo => {
+      const b = document.createElement('button');
+      b.textContent = mo.name;
+      if (mo.id === state.rankingMode) b.classList.add('active');
+      b.addEventListener('click', () => {
+        if (mo.id === state.rankingMode) return;
+        state.rankingMode = mo.id;
+        sfxClick();
+        renderRanking();
+      });
+      m.appendChild(b);
+    });
+
+    // Category filter
     const f = $('rankingFilter');
     f.innerHTML = '';
     const filters = [{ id:'all', name:'Todas', emoji:'🌐' }]
@@ -1885,12 +2098,16 @@
       f.appendChild(b);
     });
 
-    const all = loadRanking()
-      .filter(e => state.rankingFilter === 'all' || e.category === state.rankingFilter)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 10);
-
+    // Loading state
     const list = $('rankingList');
+    list.innerHTML = '<div class="ranking-empty">// CARGANDO REGISTROS...</div>';
+
+    const data = await loadRankingFor({
+      mode: state.rankingMode,
+      category: state.rankingFilter
+    });
+    const all = data.sort((a, b) => b.score - a.score).slice(0, 10);
+
     list.innerHTML = '';
     if (!all.length) {
       const e = document.createElement('div');
@@ -1929,7 +2146,7 @@
   function shareToTwitter() {
     if (!state.game) return;
     const cat = CATEGORIES[state.game.categoryId];
-    const text = `¡He conseguido ${state.game.totalScore}/5000 en PixelEra (${cat.emoji} ${cat.name})! ¿Puedes superarme? 🎯`;
+    const text = `¡He conseguido ${state.game.totalScore}/10000 en RetroGuesser (${cat.emoji} ${cat.name})! ¿Puedes superarme? 🎯`;
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
   }
 

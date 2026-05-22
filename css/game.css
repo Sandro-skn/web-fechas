@@ -68,9 +68,12 @@
   display: flex;
   gap: 4px;
   justify-content: center;
+  padding: 0 12px;
 }
 .strip-piece {
-  width: 52px;
+  flex: 1 1 0;
+  max-width: 36px;
+  min-width: 0;
   height: 4px;
   background: rgba(var(--accent-rgb), 0.12);
   border-radius: 0;

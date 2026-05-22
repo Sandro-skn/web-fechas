@@ -18,24 +18,55 @@
   margin-top: 4px;
   text-shadow: 0 0 8px rgba(var(--accent-rgb), 0.5);
 }
-.ranking-filter {
+.ranking-mode {
   display: flex;
   gap: 8px;
-  overflow-x: auto;
+  justify-content: center;
+  padding: 6px 0 10px;
+}
+.ranking-mode button {
+  background: rgba(8, 18, 30, 0.6);
+  border: 1px solid rgba(var(--accent-rgb), 0.4);
+  color: rgba(var(--accent-rgb), 0.8);
+  padding: 10px 22px;
+  border-radius: 3px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.18em;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.ranking-mode button:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.3);
+}
+.ranking-mode button.active {
+  background: rgba(245, 197, 24, 0.18);
+  color: var(--gold);
+  border-color: var(--gold);
+  box-shadow: 0 0 24px rgba(245, 197, 24, 0.45), inset 0 0 12px rgba(245, 197, 24, 0.1);
+  text-shadow: 0 0 10px rgba(245, 197, 24, 0.6);
+}
+
+.ranking-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
   padding: 4px 0;
-  margin-bottom: 8px;
-  scrollbar-width: thin;
+  margin-bottom: 14px;
 }
 .ranking-filter button {
   background: rgba(8, 18, 30, 0.6);
   border: 1px solid rgba(var(--accent-rgb), 0.35);
   color: rgba(var(--accent-rgb), 0.75);
-  padding: 8px 16px;
+  padding: 7px 14px;
   border-radius: 3px;
   font-family: 'DM Mono', monospace;
   font-weight: 600;
-  font-size: 11px;
-  letter-spacing: 0.2em;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.18s ease;
@@ -56,8 +87,11 @@
 
 .ranking-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 14px;
+  max-width: 980px;
+  margin: 0 auto;
+  width: 100%;
 }
 .collector-card {
   background: rgba(8, 18, 30, 0.7);
@@ -161,10 +195,14 @@
   letter-spacing: 0.2em;
 }
 .ranking-empty {
+  grid-column: 1 / -1;
   text-align: center;
-  padding: 40px 20px;
-  color: rgba(var(--accent-rgb), 0.55);
+  padding: 56px 20px;
+  color: rgba(var(--accent-rgb), 0.6);
   font-family: 'DM Mono', monospace;
   font-size: 13px;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
+  border: 1px dashed rgba(var(--accent-rgb), 0.25);
+  border-radius: 4px;
+  background: rgba(8, 18, 30, 0.35);
 }

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#0c0a08" />
-<title>PixelEra · Time Archive</title>
+<title>RetroGuesser · Adivina el año</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Bebas+Neue&family=Special+Elite&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -21,17 +21,17 @@
 </head>
 <body>
 
-<div id="boot">PIXELERA // INICIANDO SISTEMA</div>
+<div id="boot">RETROGUESSER // INICIANDO SISTEMA</div>
 
 <!-- ============== INTRO ============== -->
-<section id="screen-intro" class="screen active" role="button" tabindex="0" aria-label="Comenzar PixelEra">
+<section id="screen-intro" class="screen active" role="button" tabindex="0" aria-label="Comenzar RetroGuesser">
   <div class="intro-top-strip">
-    <span>// PIXELERA SYSTEMS</span>
+    <span>// RETROGUESSER SYSTEMS</span>
     <span>RANGO: 1860 — 2026</span>
   </div>
   <canvas id="introCanvas"></canvas>
   <div class="intro-overlay">
-    <h1 class="intro-title">PixelEra</h1>
+    <h1 class="intro-title">RetroGuesser</h1>
     <div class="intro-subtitle">— ARCHIVO FOTOGRÁFICO · ADIVINA EL AÑO —</div>
     <div class="intro-prompt">HAZ CLICK PARA EMPEZAR</div>
   </div>
@@ -57,7 +57,7 @@
     <div class="game-header">
       <div class="header-left">
         <button class="back-btn" id="btnHomeFromGame" title="Volver al menú">←</button>
-        <div>RONDA <b id="roundNum">1</b>/5 · <span class="cat-chip" id="catChip">🎮 VIDEOJUEGOS</span></div>
+        <div>RONDA <b id="roundNum">1</b>/10 · <span class="cat-chip" id="catChip">🎮 VIDEOJUEGOS</span></div>
       </div>
       <div class="game-score">★ <span id="gameScore">0</span> PTS</div>
     </div>
@@ -100,7 +100,7 @@
     <div class="result-stage">
       <div class="polaroid result-polaroid" id="resultPolaroid">
         <div class="polaroid-image"><img id="resultImage" alt="" /></div>
-        <div class="polaroid-caption">// ARCHIVO PIXELERA</div>
+        <div class="polaroid-caption">// ARCHIVO RETROGUESSER</div>
       </div>
       <div class="date-stamp" id="dateStamp">
         <div class="stamp-line">// AÑO</div>
@@ -138,53 +138,66 @@
 <!-- ============== FINAL ============== -->
 <section id="screen-final" class="screen">
   <button class="screen-back-fab" id="btnHomeFromFinalTop" title="Volver al menú">← MENÚ</button>
-  <div class="page-wrap">
-    <div class="receipt-wrap">
-      <div class="receipt" id="receipt">
-        <div class="rating-badge" id="ratingBadge">
-          <span class="rating-num" id="ratingNum">—</span>
-          <span class="rating-max">/ 10</span>
+  <div class="page-wrap final-page">
+    <div class="final-grid">
+      <!-- LEFT: Save card -->
+      <aside class="final-side final-side-left">
+        <div class="save-card">
+          <div class="save-card-title">// REGISTRA TU PUNTUACIÓN</div>
+          <div class="save-card-sub">Si entras en el top 10 quedará para siempre</div>
+          <input type="text" id="nicknameInput" placeholder="TU NOMBRE (máx. 16)" maxlength="16" class="nickname-input" />
+          <button class="stamp-btn primary btn-block" id="btnSaveRanking">▸ GUARDAR EN EL RANKING</button>
         </div>
-        <div class="receipt-header">
-          <div class="receipt-logo">PIXELERA</div>
-          <div class="receipt-tagline">// INFORME FINAL v2.6</div>
-          <div class="receipt-meta">NODO-01 · NÚCLEO TEMPORAL · PXL.NET</div>
-        </div>
+      </aside>
 
-        <div class="receipt-row muted"><div>CATEGORÍA</div><div id="receiptCategory">—</div></div>
-        <div class="receipt-row muted"><div>FECHA</div><div id="receiptDate">—</div></div>
-        <div class="receipt-row muted"><div>ID PARTIDA</div><div id="receiptTicket">000000</div></div>
-        <div class="receipt-row muted"><div>RONDAS</div><div>5</div></div>
+      <!-- CENTER: Receipt -->
+      <div class="receipt-wrap">
+        <div class="receipt" id="receipt">
+          <div class="rating-badge" id="ratingBadge">
+            <span class="rating-num" id="ratingNum">—</span>
+            <span class="rating-max">/ 10</span>
+          </div>
+          <div class="receipt-header">
+            <div class="receipt-logo">RETROGUESSER</div>
+            <div class="receipt-tagline">// INFORME FINAL v2.6</div>
+            <div class="receipt-meta">NODO-01 · NÚCLEO TEMPORAL · PXL.NET</div>
+          </div>
 
-        <div class="receipt-divider">────────────────────</div>
+          <div class="receipt-row muted"><div>CATEGORÍA</div><div id="receiptCategory">—</div></div>
+          <div class="receipt-row muted"><div>FECHA</div><div id="receiptDate">—</div></div>
+          <div class="receipt-row muted"><div>ID PARTIDA</div><div id="receiptTicket">000000</div></div>
+          <div class="receipt-row muted"><div>RONDAS</div><div>10</div></div>
 
-        <div class="receipt-items" id="receiptItems"></div>
+          <div class="receipt-divider">────────────────────</div>
 
-        <div class="receipt-divider">────────────────────</div>
+          <div class="receipt-items" id="receiptItems"></div>
 
-        <div class="receipt-row"><div>SUBTOTAL</div><div id="receiptSubtotal">0</div></div>
-        <div class="receipt-row"><div>BONUS TIEMPO</div><div id="receiptBonus">0</div></div>
-        <div class="receipt-row total"><div>TOTAL</div><div id="receiptTotal">0/5000</div></div>
+          <div class="receipt-divider">────────────────────</div>
 
-        <div class="receipt-tier" id="receiptTier">EXCELENTE</div>
+          <div class="receipt-row"><div>SUBTOTAL</div><div id="receiptSubtotal">0</div></div>
+          <div class="receipt-row"><div>BONUS TIEMPO</div><div id="receiptBonus">0</div></div>
+          <div class="receipt-row total"><div>TOTAL</div><div id="receiptTotal">0/10000</div></div>
 
-        <div class="receipt-footer">
-          <div class="receipt-thanks">// PARTIDA COMPLETADA</div>
-          <div class="receipt-footnote">// FIN DE TRANSMISIÓN</div>
-          <div class="barcode" id="barcode"></div>
-          <div class="barcode-num" id="barcodeNum">0000 0000 0000</div>
+          <div class="receipt-tier" id="receiptTier">EXCELENTE</div>
+
+          <div class="receipt-footer">
+            <div class="receipt-thanks">// PARTIDA COMPLETADA</div>
+            <div class="receipt-footnote">// FIN DE TRANSMISIÓN</div>
+            <div class="barcode" id="barcode"></div>
+            <div class="barcode-num" id="barcodeNum">0000 0000 0000</div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="final-actions">
-      <button class="stamp-btn primary btn-block" id="btnHomeFromFinal" style="font-size:15px;">← VOLVER AL MENÚ PRINCIPAL</button>
-      <input type="text" id="nicknameInput" placeholder="TU NOMBRE PARA EL RANKING" maxlength="16" class="nickname-input" />
-      <button class="stamp-btn btn-block" id="btnSaveRanking">▸ GUARDAR EN EL RANKING</button>
-      <div class="btn-row">
-        <button class="stamp-btn light" id="btnShare">𝕏 COMPARTIR</button>
-        <button class="stamp-btn light" id="btnReplay">↻ JUGAR DE NUEVO</button>
-      </div>
+      <!-- RIGHT: Secondary actions -->
+      <aside class="final-side final-side-right">
+        <div class="side-actions">
+          <div class="side-actions-title">// ACCIONES</div>
+          <button class="stamp-btn primary btn-block" id="btnReplay">↻ JUGAR DE NUEVO</button>
+          <button class="stamp-btn light btn-block" id="btnShare">𝕏 COMPARTIR</button>
+          <button class="stamp-btn ghost btn-block" id="btnHomeFromFinal">← MENÚ PRINCIPAL</button>
+        </div>
+      </aside>
     </div>
   </div>
 </section>
@@ -196,6 +209,7 @@
       <h1>RANKING GLOBAL</h1>
       <p>// MEJORES VIAJEROS DEL TIEMPO</p>
     </div>
+    <div class="ranking-mode" id="rankingMode"></div>
     <div class="ranking-filter" id="rankingFilter"></div>
     <div class="ranking-list" id="rankingList"></div>
     <div style="max-width: 380px; margin: 0 auto; width: 100%;">
@@ -211,6 +225,16 @@
 <!-- ============== LIBRARIES (CDN) ============== -->
 <script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<!-- ============== IMAGE DATA (uno por categoría — añade entradas aquí) ============== -->
+<script src="js/data/historia.js"></script>
+<script src="js/data/cine.js"></script>
+<script src="js/data/ciudades.js"></script>
+<script src="js/data/futbol.js"></script>
+<script src="js/data/videojuegos.js"></script>
+
+<!-- ============== SUPABASE CONFIG (rellena tus credenciales) ============== -->
+<script src="js/supabase-config.js"></script>
 
 <!-- ============== APP ============== -->
 <script src="js/app.js"></script>

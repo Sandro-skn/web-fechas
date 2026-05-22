@@ -1,0 +1,33 @@
+/* CIUDADES — fotos de ciudades, monumentos, skylines. */
+window.PXL_DATA = window.PXL_DATA || {};
+window.PXL_DATA.ciudades = [
+  { file:'Tour_Eiffel_Wikimedia_Commons_(cropped).jpg', year:2014, title:'Torre Eiffel', fact:'Construida para la Exposición Universal de 1889 por Gustave Eiffel.' },
+  { file:'Front_view_of_Statue_of_Liberty_(cropped).jpg', year:2017, title:'Estatua de la Libertad', fact:'Regalo de Francia a EEUU inaugurado en 1886.' },
+  { file:'Elizabeth_Tower,_June_2022.jpg', year:2022, title:'Elizabeth Tower (Big Ben)', fact:'Torre del reloj del Palacio de Westminster restaurada en 2022.' },
+  { file:'Brandenburger_Tor_abends.jpg', year:2018, title:'Puerta de Brandeburgo', fact:'Monumento neoclásico de 1791, símbolo de Berlín reunificado.' },
+  { file:'Colosseo_2020.jpg', year:2020, title:'Coliseo de Roma', fact:'Anfiteatro construido entre 70-80 d.C. bajo los emperadores Flavios.' },
+  { file:'Sydney_Australia._(21339175489).jpg', year:2015, title:'Ópera de Sídney', fact:'Diseñada por Jørn Utzon e inaugurada en 1973.' },
+  { file:'Tokyo_Tower_2023.jpg', year:2023, title:'Torre de Tokio', fact:'Inaugurada en 1958, inspirada en la Torre Eiffel.' },
+  { file:'Burj_Khalifa_(worlds_tallest_building)_and_the_Dubai_skyline_(25781049892).jpg', year:2016, title:'Burj Khalifa', fact:'El edificio más alto del mundo (828 m), inaugurado en Dubái en 2010.' },
+  { file:'1029_Acropolis_of_Athens_in_Greece_at_night_Photo_by_Giles_Laurent.jpg', year:2023, title:'Acrópolis de Atenas', fact:'Conjunto monumental del siglo V a.C., con el Partenón como joya.' },
+  { file:'Brooklyn_Bridge_Manhattan.jpg', year:2010, title:'Puente de Brooklyn', fact:'Vista moderna del puente histórico de Nueva York.' },
+  { file:'Empire_State_Building_(aerial_view).jpg', year:2015, title:'Empire State Building', fact:'Vista aérea del rascacielos art déco de 1931.' },
+  { file:'Tower_Bridge_at_Dawn.jpg', year:2015, title:'Tower Bridge', fact:'El icónico puente basculante del Támesis al amanecer.' },
+  { file:'Notre-Dame_de_Paris,_4_October_2017.jpg', year:2017, title:'Notre-Dame de París', fact:'La catedral antes del incendio de abril de 2019.' },
+  { file:'Louvre_Museum_Wikimedia_Commons.jpg', year:2014, title:'Museo del Louvre', fact:'Pirámide de Pei en el patio principal del palacio.' },
+  { file:'Arc_de_Triomphe,_Paris_21_October_2010.jpg', year:2010, title:'Arco del Triunfo', fact:'Monumento napoleónico encargado en 1806 en la place de l\'Étoile.' },
+  { file:'Madrid_Plaza_Mayor_(48733706273).jpg', year:2019, title:'Plaza Mayor de Madrid', fact:'Iniciada en 1617 bajo Felipe III, corazón del Madrid de los Austrias.' },
+  { file:'Christ_the_Redeemer_-_Cristo_Redentor.jpg', year:2015, title:'Cristo Redentor', fact:'Estatua art déco de 38 m sobre el Corcovado en Río de Janeiro.' },
+  { file:'The_Great_Wall_of_China_at_Jinshanling-edit.jpg', year:2008, title:'Gran Muralla China', fact:'Sección de Jinshanling, una de las mejor conservadas.' },
+  { file:'The_Forbidden_City_-_View_from_Coal_Hill.jpg', year:2014, title:'Ciudad Prohibida', fact:'Palacio imperial chino, residencia de emperadores Ming y Qing.' },
+  { file:'Al_Deir_Petra.JPG', year:2010, title:'Petra (El Monasterio)', fact:'Antigua ciudad nabatea esculpida en la roca rosa de Jordania.' },
+  { file:'Pyramids_of_the_Giza_Necropolis.jpg', year:2010, title:'Pirámides de Giza', fact:'Las tres pirámides faraónicas con la Esfinge.' },
+  { file:'Hagia_Sophia_(228968325).jpeg', year:2015, title:'Santa Sofía', fact:'Antigua catedral bizantina del año 537, hoy mezquita en Estambul.' },
+  { file:'Sydney_Harbour_Bridge-16_October_2025.jpg', year:2025, title:'Sydney Harbour Bridge', fact:'Apodado "The Coathanger", inaugurado en 1932.' },
+  { file:'Golden_Gate_Bridge_as_seen_from_Battery_East.jpg', year:2015, title:'Golden Gate Bridge', fact:'El puente colgante naranja de San Francisco, inaugurado en 1937.' },
+  { file:'View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu_(cropped).jpg', year:2018, title:'Manhattan desde Rockefeller', fact:'Vista clásica del skyline neoyorquino.' },
+  { file:'Las_Vegas_Strip_09_2017_4897.jpg', year:2017, title:'Las Vegas Strip', fact:'La avenida principal del entretenimiento en el desierto de Nevada.' },
+  { file:'Dubai_Marina_Skyline.jpg', year:2017, title:'Dubai Marina', fact:'Distrito artificial de rascacielos de lujo a orillas del Golfo.' },
+  { file:'Shibuya_Crossing,_Aerial.jpg', year:2018, title:'Cruce de Shibuya', fact:'El paso de peatones más fotografiado del mundo, en Tokio.' },
+  { file:'Cidade_Maravilhosa.jpg', year:2014, title:'Río de Janeiro', fact:'La "Cidade Maravilhosa" vista desde el Cristo Redentor.' }
+];
